@@ -5,6 +5,7 @@ import axios from "axios";
 import logo from "../assets/neotutorlogotr.png";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useParams } from "react-router-dom";
 
 type Message = {
   text: string;
@@ -15,15 +16,37 @@ type Message = {
   endTime?: string;
 };
 
+const LOCAL_STORAGE_KEY = "aiTutorHistory";
+
 const Tutor = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [channelName, setChannelName] = useState("Tutor");
+  const [channelLogo, setChannelLogo] = useState("/default-logo.png");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const channelName = localStorage.getItem("channelName") || "Tutor";
-  const channelLogo =
-    localStorage.getItem("channelLogoUrl") || "/default-logo.png";
+  const instanceId = useParams().id;
+
+  useEffect(() => {
+    // Load channel info from saved history
+    const savedHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedHistory && instanceId) {
+      try {
+        const history = JSON.parse(savedHistory) as Array<{
+          instanceId: string;
+          channelData: { channelName: string; thumbnailUrl: string };
+        }>;
+        const tutorItem = history.find((item) => item.instanceId === instanceId);
+        if (tutorItem) {
+          setChannelName(tutorItem.channelData.channelName);
+          setChannelLogo(tutorItem.channelData.thumbnailUrl);
+        }
+      } catch {
+        // fallback default if parse error
+      }
+    }
+  }, [instanceId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -44,6 +67,7 @@ const Tutor = () => {
     try {
       const res = await axios.post("http://localhost:3000/query", {
         userQuery: input,
+        instanceId,
       });
 
       const response = res.data.message;
@@ -57,7 +81,7 @@ const Tutor = () => {
         response.endTime &&
         response.title
       ) {
-        // Construct video URL with timestamps if needed
+        // ... your existing video URL construction code ...
         const videoIdMatch = response.videoUrl.match(
           /(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/
         );
@@ -74,8 +98,6 @@ const Tutor = () => {
           url = `https://www.youtube.com/embed/${videoId}?start=${start}&autoplay=1&rel=0`;
           if (end) url += `&end=${end}`;
         }
-
-        console.log(url, "urllllll");
 
         botReply = {
           sender: "bot",

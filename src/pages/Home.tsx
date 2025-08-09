@@ -53,14 +53,11 @@ export default function Home() {
       const ragData = await ragRes.json();
       console.log("RAG response:", ragData);
 
-      localStorage.setItem("channelName", ragData.title);
-      localStorage.setItem("channelLogoUrl", ragData.icon);
-
       clearInterval(interval);
       setLoadingMessage("✅ All done!");
       setTimeout(() => {
         setLoading(false);
-        navigate("/tutor");
+        navigate("/tutors");
       }, 1000);
     } catch (err) {
       clearInterval(interval);
@@ -137,7 +134,7 @@ export default function Home() {
               className="space-y-6 border-2 border-cyan-400 p-8 rounded-lg backdrop-blur-sm bg-transparent"
             >
               <h2 className="text-2xl font-bold text-center text-cyan-400">
-                🎓 Your AI Tutor
+                Your AI Tutor
               </h2>
               <div className="space-y-4">
                 <div>
@@ -173,7 +170,7 @@ export default function Home() {
                 type="submit"
                 className="w-full bg-teal-700 text-white font-semibold py-2 rounded-md hover:bg-teal-800 transition cursor-pointer"
               >
-                Create AI Tutor 🚀
+                Create AI Tutor
               </button>
             </form>
           )}

@@ -26,14 +26,14 @@ export default function Header() {
             Home
           </NavLink>
           <NavLink
-            to="/tutor"
+            to="/tutors"
             className={({ isActive }) =>
               isActive
                 ? "text-white font-medium"
                 : "hover:text-white transition-colors"
             }
           >
-            Tutor
+            Your Tutors
           </NavLink>
           <NavLink
             to="/contact"

@@ -6,6 +6,7 @@ import Layout from "../Layout/Layout";
 
 const Home = lazy(() => import("../pages/Home"));
 const Tutor = lazy(() => import("../pages/Tutor"));
+const Tutors = lazy(() => import("../pages/Tutors"));
 const Contact = lazy(() => import("../pages/Contact"));
 
 const router = createBrowserRouter([
@@ -23,7 +24,16 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "tutor",
+        path: "tutors",
+        errorElement: <ErrorPage />,
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Tutors />
+          </Suspense>
+        ),
+      },
+      {
+        path: "tutor/:id",
         errorElement: <ErrorPage />,
         element: (
           <Suspense fallback={<Shimmer />}>
