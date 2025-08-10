@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import { useParams } from "react-router-dom";
 import ScrollableFeed from "react-scrollable-feed";
 import { API_BASE_URL } from "@/utils/constants";
+import { useAuth } from "@/context/AuthContext";
 
 type Message = {
   text: string;
@@ -27,6 +28,8 @@ const Tutor = () => {
   const [channelName, setChannelName] = useState("Tutor");
   const [channelLogo, setChannelLogo] = useState("/default-logo.png");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { user } = useAuth();
 
   const instanceId = useParams().id;
 
@@ -172,7 +175,7 @@ const Tutor = () => {
           >
             <div className="flex items-center gap-2 pl-1 max-w-[90%]">
               {msg.sender === "bot" && (
-                <img src={channelLogo} className="w-8 h-8 rounded-full" />
+                <img src={channelLogo} className="w-10 h-10 rounded-full" />
               )}
               <div
                 className={`px-4 py-3 rounded-2xl text-base whitespace-pre-wrap shadow ${
@@ -197,20 +200,27 @@ const Tutor = () => {
                     </div>
                     <div className="pt-2 prose prose-sm dark:prose-invert">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {msg.text.replaceAll('\\n','')}
+                        {msg.text.replaceAll("\\n", "")}
                       </ReactMarkdown>
                     </div>
                   </div>
                 ) : (
                   <div className="pt-2 prose prose-sm dark:prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {msg.text.replaceAll('\\n','')}
+                      {msg.text.replaceAll("\\n", "")}
                     </ReactMarkdown>
                   </div>
                 )}
               </div>
               {msg.sender === "user" && (
-                <img src={logo} className="w-8 h-8 rounded-full" />
+                <img
+                  src={
+                    user?.githubUsername
+                      ? `https://avatars.githubusercontent.com/${user.githubUsername}`
+                      : logo
+                  }
+                  className="w-10 h-10 rounded-full"
+                />
               )}
             </div>
           </motion.div>
