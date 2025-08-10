@@ -6,6 +6,8 @@ import logo from "../assets/neotutorlogotr.png";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useParams } from "react-router-dom";
+import ScrollableFeed from "react-scrollable-feed";
+import { API_BASE_URL } from "@/utils/constants";
 
 type Message = {
   text: string;
@@ -29,21 +31,23 @@ const Tutor = () => {
   const instanceId = useParams().id;
 
   useEffect(() => {
-    // Load channel info from saved history
     const savedHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedHistory && instanceId) {
       try {
         const history = JSON.parse(savedHistory) as Array<{
           instanceId: string;
-          channelData: { channelName: string; thumbnailUrl: string };
+          channelData: { channelName: string; logoUrl: string };
         }>;
-        const tutorItem = history.find((item) => item.instanceId === instanceId);
+
+        const tutorItem = history.find(
+          (item) => item.instanceId === instanceId
+        );
         if (tutorItem) {
+          setChannelLogo(tutorItem.channelData.logoUrl); // already in storage
           setChannelName(tutorItem.channelData.channelName);
-          setChannelLogo(tutorItem.channelData.thumbnailUrl);
         }
-      } catch {
-        // fallback default if parse error
+      } catch (err) {
+        console.error("Error parsing saved history:", err);
       }
     }
   }, [instanceId]);
@@ -65,10 +69,16 @@ const Tutor = () => {
     setIsTyping(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/query", {
-        userQuery: input,
-        instanceId,
-      });
+      const res = await axios.post(
+        `${API_BASE_URL}/query`,
+        {
+          userQuery: input,
+          instanceId,
+        },
+        {
+          withCredentials: true, // ✅ sends cookies
+        }
+      );
 
       const response = res.data.message;
 
@@ -81,7 +91,6 @@ const Tutor = () => {
         response.endTime &&
         response.title
       ) {
-        // ... your existing video URL construction code ...
         const videoIdMatch = response.videoUrl.match(
           /(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/
         );
@@ -151,7 +160,7 @@ const Tutor = () => {
       </header>
 
       {/* Chat area */}
-      <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+      <ScrollableFeed className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {messages.map((msg, index) => (
           <motion.div
             key={index}
@@ -172,8 +181,7 @@ const Tutor = () => {
                     : "bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-bl-none"
                 }`}
               >
-                {/* Video response */}
-                {msg.videoUrl && (
+                {msg.videoUrl ? (
                   <div className="space-y-2">
                     <div className="font-semibold text-base">
                       🎬 {msg.title}
@@ -189,17 +197,14 @@ const Tutor = () => {
                     </div>
                     <div className="pt-2 prose prose-sm dark:prose-invert">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {msg.text}
+                        {msg.text.replaceAll('\\n','')}
                       </ReactMarkdown>
                     </div>
                   </div>
-                )}
-
-                {/* Text-only response */}
-                {!msg.videoUrl && (
+                ) : (
                   <div className="pt-2 prose prose-sm dark:prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {msg.text}
+                      {msg.text.replaceAll('\\n','')}
                     </ReactMarkdown>
                   </div>
                 )}
@@ -219,7 +224,7 @@ const Tutor = () => {
         )}
 
         <div ref={messagesEndRef} />
-      </main>
+      </ScrollableFeed>
 
       {/* Input bar */}
       <footer className="px-4 py-3 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">

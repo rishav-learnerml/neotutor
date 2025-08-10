@@ -12,7 +12,9 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
@@ -23,6 +25,7 @@
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.8.0",
+    "react-scrollable-feed": "^2.0.3",
     "react-tsparticles": "^2.12.2",
     "recoil": "^0.7.7",
     "remark-gfm": "^4.0.1",

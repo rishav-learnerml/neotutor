@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function App() {
   return (
-    <div className="bg-stone-300">
+    <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <RouterProvider router={router} />
     </div>
   );

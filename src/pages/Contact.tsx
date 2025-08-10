@@ -1,19 +1,31 @@
+import logo from "../assets/neotutorlogotr.png";
+
 export default function Contact() {
   return (
-    <main className="flex items-center justify-center dark:bg-slate-900 py-16 px-4">
-      <section className="w-8/12 max-w-5xl bg-white dark:bg-slate-800 shadow-xl rounded-2xl grid md:grid-cols-2 p-8 md:p-12 gap-8">
+    <main className="flex items-center justify-center py-16 px-4 h-[90vh]">
+      <section
+        className="w-8/12 max-w-5xl 
+        group overflow-hidden rounded-2xl shadow-lg hover:shadow-cyan-500/30 transition-all duration-500 bg-white/10 backdrop-blur-lg border border-white/20
+        grid md:grid-cols-2 p-8 md:p-12 gap-8"
+      >
+
+        <div className=" flex flex-col">
+
+        <img src={logo} alt="logo" className="w-32 pb-6" />
+
         {/* Contact Info */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+        </div>
+          <h2 className="text-3xl font-bold text-white mb-4">
             Get in Touch ✨
           </h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-400 mb-6">
             We'd love to hear from you. Reach out anytime!
           </p>
-          <div className="space-y-4 text-slate-700 dark:text-slate-300">
+          <div className="space-y-4 text-slate-300">
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-slate-500"
+                className="w-5 h-5 text-cyan-400"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -23,7 +35,7 @@ export default function Contact() {
             </div>
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-slate-500"
+                className="w-5 h-5 text-cyan-400"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -33,7 +45,7 @@ export default function Contact() {
             </div>
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-slate-500"
+                className="w-5 h-5 text-cyan-400"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -47,38 +59,38 @@ export default function Contact() {
         {/* Contact Form */}
         <form className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            <label className="text-sm font-medium text-slate-300">
               Your Name
             </label>
             <input
               type="text"
               placeholder="John Doe"
-              className="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-2 text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-500 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800/80 px-4 py-2 text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            <label className="text-sm font-medium text-slate-300">
               Your Email
             </label>
             <input
               type="email"
               placeholder="john@example.com"
-              className="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-2 text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-500 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800/80 px-4 py-2 text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            <label className="text-sm font-medium text-slate-300">
               Your Message
             </label>
             <textarea
               placeholder="Write your message..."
               rows={4}
-              className="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-2 text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-500 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-800/80 px-4 py-2 text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-slate-600 text-white px-4 py-2 font-semibold hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-4 py-2 font-semibold hover:from-cyan-600 hover:to-teal-600 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z" />

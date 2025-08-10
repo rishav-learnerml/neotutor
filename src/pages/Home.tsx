@@ -2,10 +2,11 @@ import { useCallback, useState } from "react";
 import Particles from "react-tsparticles";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 import { loadSlim } from "tsparticles-slim";
 import type { Container, Engine } from "tsparticles-engine";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/neotutorlogotr.png";
+import { API_BASE_URL } from "@/utils/constants";
 
 export default function Home() {
   const [playlistUrl, setPlaylistUrl] = useState("");
@@ -18,28 +19,41 @@ export default function Home() {
 
   const messages = [
     "Brewing up your playlist...",
-    "Training the AI tutor...",
-    "Generating magic BTS...",
+    "Training your AI tutor...",
+    "Generating magic behind the scenes...",
     "Almost ready...",
+    "Summoning knowledge from the depths of YouTube...",
+    "Converting videos into pure brain fuel...",
+    "Teaching your tutor some new tricks...",
+    "Assembling the ultimate learning experience...",
+    "Making sense of hours of content in seconds...",
+    "Loading brilliance… please stand by...",
   ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isAuthenticated = Boolean(localStorage.getItem("authToken"));
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return;
+    }
+
     setLoading(true);
     let i = 0;
-
     const interval = setInterval(() => {
       setLoadingMessage(messages[i % messages.length]);
       i++;
     }, 2000);
 
     try {
-      // Step 1: Call /generate-pdf
-      const res = await fetch("http://localhost:3000/generate-pdf", {
+      const res = await fetch(`${API_BASE_URL}/generate-pdf`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           channelUrl: playlistUrl,
           noOfVideos: videoCount,
+          credentials: "include",
         }),
       });
 
@@ -47,8 +61,10 @@ export default function Home() {
       const data = await res.json();
       console.log("PDF generated:", data);
 
-      // Step 2: Call /create-vectors
-      const ragRes = await fetch("http://localhost:3000/create-vectors");
+      const ragRes = await fetch(`${API_BASE_URL}/create-vectors`,{
+        method: "GET",
+        credentials: "include",
+      });
       if (!ragRes.ok) throw new Error("Failed to create vectors");
       const ragData = await ragRes.json();
       console.log("RAG response:", ragData);
@@ -84,7 +100,7 @@ export default function Home() {
   );
 
   return (
-    <div className="relative w-full overflow-hidden h-[70vh]">
+    <div className="relative w-full overflow-hidden h-[90vh]">
       {/* Particles */}
       <Particles
         id="tsparticles"
@@ -125,7 +141,18 @@ export default function Home() {
         >
           {loading ? (
             <div className="flex flex-col items-center justify-center space-y-4 text-cyan-300">
-              <Loader2 className="w-12 h-12 animate-spin" />
+              {/* Animated Logo */}
+              <motion.img
+                src={logo} // <- Replace with your actual logo path
+                alt="App Logo"
+                className="w-20 h-20"
+                animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.05, 1] }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
               <p className="text-lg font-medium">{loadingMessage}</p>
             </div>
           ) : (
