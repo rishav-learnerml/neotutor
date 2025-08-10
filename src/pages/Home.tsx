@@ -33,7 +33,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isAuthenticated = Boolean(localStorage.getItem("authToken"));
+    const isAuthenticated = Boolean(localStorage.getItem("isLoggedIn"));
     if (!isAuthenticated) {
       navigate("/auth");
       return;
@@ -50,10 +50,10 @@ export default function Home() {
       const res = await fetch(`${API_BASE_URL}/generate-pdf`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // <-- This must be here
         body: JSON.stringify({
           channelUrl: playlistUrl,
           noOfVideos: videoCount,
-          credentials: "include",
         }),
       });
 
@@ -61,7 +61,7 @@ export default function Home() {
       const data = await res.json();
       console.log("PDF generated:", data);
 
-      const ragRes = await fetch(`${API_BASE_URL}/create-vectors`,{
+      const ragRes = await fetch(`${API_BASE_URL}/create-vectors`, {
         method: "GET",
         credentials: "include",
       });
@@ -153,7 +153,7 @@ export default function Home() {
                   ease: "easeInOut",
                 }}
               />
-              <p className="text-lg font-medium">{loadingMessage}</p>
+              <p className="text-lg font-medium text-center">{loadingMessage}</p>
             </div>
           ) : (
             <form

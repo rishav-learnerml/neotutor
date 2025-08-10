@@ -83,7 +83,7 @@ const Tutor = () => {
         }
       );
 
-      const response = res.data.message;
+      const response = res.data.text;
 
       let botReply: Message;
 
